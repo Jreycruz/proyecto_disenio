@@ -12,7 +12,7 @@ loadEnvFile()
 
 // const server = createserver((req, res)=>{})
 const app = express()
-const PORT = process.env.PORT //|| 4321
+const PORT = process.env.PORT || 4321
 
 
 // middlewares
