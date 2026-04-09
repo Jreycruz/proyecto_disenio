@@ -133,3 +133,41 @@ export const updateGenre = async (req, res) => {
     })
   }
 }
+
+export const deleteGenre = async (req, res) => {
+  const { id } = req.params
+
+  if (isNaN(id)) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El id debe ser numérico',
+      data: null
+    })
+  }
+
+  try {
+    const genreFound = await Genre.find(id)
+
+    if (!genreFound.length) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Género no encontrado',
+        data: null
+      })
+    }
+
+    await Genre.delete({ id })
+
+    return res.json({
+      status: 'success',
+      message: 'Género eliminado correctamente',
+      data: null
+    })
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al eliminar el género: ' + e.message,
+      data: null
+    })
+  }
+}

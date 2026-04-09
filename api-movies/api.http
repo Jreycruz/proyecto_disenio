@@ -69,3 +69,7 @@ Content-Type: application/json
 {
   "name": "Acción y aventura"
 }
+
+### eliminar un genero
+DELETE http://localhost:4321/genres/1
+Authorization: Bearer TU_TOKEN

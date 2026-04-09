@@ -59,6 +59,15 @@ export default class Genre {
     return rows[0]
   }
     
+  static delete = async ({ id }) => {
+    const [result] = await pool.query(
+        `DELETE FROM genres WHERE id = :id`,
+        { id }
+    )
+
+    return result
+  }
+    
   
 }
 
