@@ -60,3 +60,12 @@ Content-Type: application/json
 {
   "name": "Ciencia ficción"
 }
+
+### actualizar un genero
+PUT http://localhost:4321/genres/1
+Authorization: Bearer TU_TOKEN
+Content-Type: application/json
+
+{
+  "name": "Acción y aventura"
+}

@@ -83,3 +83,53 @@ export const createGenre = async (req, res) => {
     })
   }
 }
+
+export const updateGenre = async (req, res) => {
+  const { id } = req.params
+  const { name } = req.body
+
+  if (isNaN(id)) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El id debe ser numérico',
+      data: null
+    })
+  }
+
+  if (!name || typeof name !== 'string') {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El nombre es obligatorio',
+      data: null
+    })
+  }
+
+  try {
+    const genreFound = await Genre.find(id)
+
+    if (!genreFound.length) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Género no encontrado',
+        data: null
+      })
+    }
+
+    const updatedGenre = await Genre.update({
+      id,
+      input: { name }
+    })
+
+    return res.json({
+      status: 'success',
+      message: 'Género actualizado correctamente',
+      data: updatedGenre
+    })
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al actualizar el género: ' + e.message,
+      data: null
+    })
+  }
+}

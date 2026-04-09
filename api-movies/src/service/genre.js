@@ -38,6 +38,27 @@ export default class Genre {
 
   }
     
+  static update = async ({ id, input }) => {
+    await pool.query(
+        `
+        UPDATE genres
+        SET name = :name
+        WHERE id = :id
+        `,
+        {
+            id,
+            name: input.name
+        }
+    )
+
+    const [rows] = await pool.query(
+        `SELECT id, name FROM genres WHERE id = :id`,
+        { id }
+    )
+
+    return rows[0]
+  }
+    
   
 }
 
