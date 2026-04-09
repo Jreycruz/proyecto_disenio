@@ -133,3 +133,41 @@ export const updateDirector = async (req, res) => {
     })
   }
 }
+
+export const deleteDirector = async (req, res) => {
+  const { id } = req.params
+
+  if (isNaN(id)) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El id debe ser numérico',
+      data: null
+    })
+  }
+
+  try {
+    const directorFound = await Director.find(id)
+
+    if (!directorFound.length) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Director no encontrado',
+        data: null
+      })
+    }
+
+    await Director.delete({ id })
+
+    return res.json({
+      status: 'success',
+      message: 'Director eliminado correctamente',
+      data: null
+    })
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al eliminar el director: ' + e.message,
+      data: null
+    })
+  }
+}

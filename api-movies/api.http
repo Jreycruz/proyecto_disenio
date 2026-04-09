@@ -99,3 +99,7 @@ Content-Type: application/json
 {
   "full_name": "Martin Scorsese"
 }
+
+### eliminar un director
+DELETE http://localhost:4321/directors/1
+Authorization: Bearer TU_TOKEN

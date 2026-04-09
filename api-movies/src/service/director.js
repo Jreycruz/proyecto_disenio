@@ -58,5 +58,13 @@ export default class Director {
     return rows[0]
   }
   
+  static delete = async ({ id }) => {
+      const [result] = await pool.query(
+        `DELETE FROM directors WHERE id = :id`,
+        { id }
+    )
+
+    return result
+  }
   
 }
