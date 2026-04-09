@@ -179,25 +179,35 @@ export const update = async (req, res) => {
 }
 
 export const deleteMovie = async (req, res) => {
-    const { id } = req.params
+  const { id } = req.params
 
-    const movie = await Movie.find(id)
+  if (isNaN(id)) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El id debe ser numérico'
+    })
+  }
 
-    if (!movie) {
-        return res.status(404).json(
-            {
-                status: 'error',
-                message: 'Pelicula no encontrada'
-            }
-        )
+  try {
+    const movieFound = await Movie.find(id)
+
+    if (!movieFound.length) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Pelicula no encontrada'
+      })
     }
 
-    await Movie.delete(id)
+    await Movie.delete({ id })
 
-
-    res.json({
-        status: "success",
-        message: "Pelicula eliminada"
+    return res.json({
+      status: 'success',
+      message: 'Pelicula eliminada'
     })
-
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al eliminar la película: ' + e.message
+    })
+  }
 }

@@ -241,12 +241,13 @@ export default class Movie {
         }
     }
 
-    static delete = async (id) => {
+    static delete = async ({ id }) => {
+    const [result] = await pool.query(
+        `DELETE FROM movies WHERE id = :id`,
+        { id }
+    )
 
-        const idx = MOVIES.findIndex((movie) => movie.id === id)
-        MOVIES.splice(idx, 1)
-
+    return result
     }
-
 }
 
