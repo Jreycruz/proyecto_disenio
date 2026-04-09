@@ -17,3 +17,39 @@ export const getAllGenres = async (req, res) => {
     })
   }
 }
+
+export const getGenreById = async (req, res) => {
+  const { id } = req.params
+
+  if (isNaN(id)) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El id debe ser numérico',
+      data: null
+    })
+  }
+
+  try {
+    const genre = await Genre.find(id)
+
+    if (!genre.length) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Género no encontrado',
+        data: null
+      })
+    }
+
+    return res.json({
+      status: 'success',
+      message: 'Obtener género por id',
+      data: genre[0]
+    })
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al obtener el género: ' + e.message,
+      data: null
+    })
+  }
+}

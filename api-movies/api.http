@@ -49,3 +49,7 @@ GET http://localhost:4321/genres
 Authorization: Bearer TU_TOKEN
 
 ### consultar un genero por id
+GET http://localhost:4321/genres/1
+Authorization: Bearer TU_TOKEN
+
+### crear un genero

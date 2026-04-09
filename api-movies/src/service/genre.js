@@ -8,4 +8,16 @@ export default class Genre {
 
     return rows
   }
+
+  static find = async (id) => {
+    const [rows] = await pool.query(
+        `SELECT id, name FROM genres WHERE id = :id`,
+        { id }
+    )
+
+    return rows
+  }
+
+  
 }
+
