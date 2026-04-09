@@ -6,7 +6,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N1ZXIiOiJtaWRvb
 GET http://localhost:3000/movies/2
 Authorization: Bearer 23n4kdm2uh234238
 
-### crear
+### crear pelicula
 POST http://localhost:3000/movies
 Content-Type:   application/json
 
@@ -19,10 +19,10 @@ Content-Type:   application/json
     ]
 }
 
-### eliminar
+### eliminar pelicula
 DELETE http://localhost:3000/movies/1234
 
-### actualizar
+### actualizar pelicula
 PUT http://localhost:3000/movies/1234
 Content-Type:   application/json
 
@@ -43,3 +43,9 @@ Content-Type:   application/json
     "username": "profesor",
     "password": "abc123"
 }
+
+### consultar todos los generos
+GET http://localhost:4321/genres
+Authorization: Bearer TU_TOKEN
+
+### consultar un genero por id
