@@ -18,6 +18,26 @@ export default class Genre {
     return rows
   }
 
+  static create = async ({ input }) => {
+    const [result] = await pool.query(
+        `
+        INSERT INTO genres (name)
+        VALUES (:name)
+        `,
+        {
+            name: input.name
+        }
+    )
+
+    const [rows] = await pool.query(
+        `SELECT id, name FROM genres WHERE id = :id`,
+        { id: result.insertId }
+    )
+
+    return rows[0]
+
+  }
+    
   
 }
 

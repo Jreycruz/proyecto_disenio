@@ -53,3 +53,33 @@ export const getGenreById = async (req, res) => {
     })
   }
 }
+
+export const createGenre = async (req, res) => {
+  const { name } = req.body
+
+  if (!name || typeof name !== 'string') {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El nombre es obligatorio',
+      data: null
+    })
+  }
+
+  try {
+    const newGenre = await Genre.create({
+      input: { name }
+    })
+
+    return res.status(201).json({
+      status: 'success',
+      message: 'Género creado correctamente',
+      data: newGenre
+    })
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al crear el género: ' + e.message,
+      data: null
+    })
+  }
+}
