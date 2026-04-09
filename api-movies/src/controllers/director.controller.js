@@ -53,3 +53,33 @@ export const getDirectorById = async (req, res) => {
     })
   }
 }
+
+export const createDirector = async (req, res) => {
+  const { full_name } = req.body
+
+  if (!full_name || typeof full_name !== 'string') {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El nombre completo es obligatorio',
+      data: null
+    })
+  }
+
+  try {
+    const newDirector = await Director.create({
+      input: { full_name }
+    })
+
+    return res.status(201).json({
+      status: 'success',
+      message: 'Director creado correctamente',
+      data: newDirector
+    })
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al crear el director: ' + e.message,
+      data: null
+    })
+  }
+}
