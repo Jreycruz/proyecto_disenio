@@ -8,4 +8,15 @@ export default class Director {
 
     return rows
   }
+
+  static find = async (id) => {
+    const [rows] = await pool.query(
+        `SELECT id, full_name FROM directors WHERE id = :id`,
+        { id }
+    )
+
+    return rows
+  }
+    
+  
 }

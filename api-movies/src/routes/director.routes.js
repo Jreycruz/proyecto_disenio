@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { getAllDirectors } from '../controllers/director.controller.js'
+import { getAllDirectors, getDirectorById } from '../controllers/director.controller.js'
 
 const directorRouter = Router()
 
 directorRouter.get('/', getAllDirectors)
+directorRouter.get('/:id', getDirectorById)
 
 export default directorRouter

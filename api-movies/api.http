@@ -73,3 +73,11 @@ Content-Type: application/json
 ### eliminar un genero
 DELETE http://localhost:4321/genres/1
 Authorization: Bearer TU_TOKEN
+
+### consultar todos los directores
+GET http://localhost:4321/directors
+Authorization: Bearer TU_TOKEN
+
+### consultar un director por id
+GET http://localhost:4321/directors/1
+Authorization: Bearer TU_TOKEN
