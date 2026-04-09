@@ -95,43 +95,35 @@ export const getById = async (req, res) => {
 }
 
 export const create = async (req, res) => {
+  const result = validateMovieSchema(req.body)
 
-    if (!req.permissions.includes('movie.create')) {
-        res.status(401).json({
-            status: 'error',
-            message: 'No tiene permisos para realizar esta acción',
-            errors: null
-        })
-    }
+  if (!result.success) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Verifique la información enviada',
+      errors: JSON.parse(result.error.message)
+    })
+  }
 
-    //obtener los datos
-    const body = req.body // server
+  try {
+    const newMovie = await Movie.create({ input: result.data })
 
-    // validar que los datos sean correctos -> server
-    const { success, data, error, errors } = validateMovieSchema(body)
-
-    if (!success) {
-        res.status(400).json({
-            status: 'error',
-            message: 'verifique la información enviada',
-            errors: errors?.error?.issues || JSON.parse(error.message)
-        })
-    }
-
-
-    //TODO: guardar los datos en la base de datos
-    // Service / Model
-    const newMovie = await Movie.create(data)
-
-
-    // responder al cliente -> server
-    res
-        .status(201)
-        .json({
-            status: 'success',
-            message: 'Pelicula creada correctamente',
-            data: newMovie
-        })
+    return res.status(201).json({
+      status: 'success',
+      message: 'Pelicula creada correctamente',
+      data: {
+        ...newMovie,
+        genres: newMovie.genres ? newMovie.genres.split(', ') : [],
+        directors: newMovie.directors ? newMovie.directors.split(', ') : []
+      }
+    })
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al crear la pelicula: ' + e.message,
+      data: null
+    })
+  }
 }
 
 export const update = async (req, res) => {
