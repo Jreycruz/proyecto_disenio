@@ -8,6 +8,7 @@ import authsRoutes from './src/routes/auth.routes.js'
 import { hasPermission } from './src/middlewares/hasPermission.js'
 import { isAuth } from './src/middlewares/isAuth.js'
 import { hasPermission } from './src/middlewares/hasPermission.js'
+import directorRouter from './src/routes/director.routes.js'
 // dotenv.config() // carga las variables de entorno (.env)
 loadEnvFile()
 
@@ -35,3 +36,7 @@ app.use('/auth', authsRoutes)
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })
+
+app.use('/genres', isAuth, hasPermission, genreRouter)
+
+app.use('/directors', isAuth, hasPermission, directorRouter)
