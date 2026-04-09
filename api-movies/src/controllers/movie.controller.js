@@ -127,38 +127,55 @@ export const create = async (req, res) => {
 }
 
 export const update = async (req, res) => {
+  const { id } = req.params
 
-    const { id } = req.params
+  if (isNaN(id)) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'El id debe ser numérico'
+    })
+  }
 
-    const movie = await Movie.find(id)
+  const result = validateMovieSchema(req.body)
 
-    if (!movie) {
-        return res.status(404).json(
-            {
-                status: 'error',
-                message: 'Pelicula no encontrada'
-            }
-        )
+  if (!result.success) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Datos incorrectos',
+      errors: JSON.parse(result.error.message)
+    })
+  }
+
+  try {
+    const movieFound = await Movie.find(id)
+
+    if (!movieFound.length) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Pelicula no encontrada'
+      })
     }
 
-    const { success, errors, error, data } = validatePartialMovieSchema(req.body)
-
-    if (!success) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Datos incorrectos',
-            errors: errors?.error?.issues || JSON.parse(error.message)
-        })
-    }
-
-    const updatedMovie = await Movie.update(id, data)
-
-    res.json({
-        status: 'success',
-        message: 'Pelicula actualizada',
-        data: updatedMovie
+    const updatedMovie = await Movie.update({
+      id,
+      input: result.data
     })
 
+    return res.json({
+      status: 'success',
+      message: 'Pelicula actualizada',
+      data: {
+        ...updatedMovie,
+        genres: updatedMovie.genres ? updatedMovie.genres.split(', ') : [],
+        directors: updatedMovie.directors ? updatedMovie.directors.split(', ') : []
+      }
+    })
+  } catch (e) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error al actualizar la película: ' + e.message
+    })
+  }
 }
 
 export const deleteMovie = async (req, res) => {
