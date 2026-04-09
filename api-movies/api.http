@@ -90,3 +90,12 @@ Content-Type: application/json
 {
   "full_name": "Steven Spielberg"
 }
+
+### actualizar un director
+PUT http://localhost:4321/directors/1
+Authorization: Bearer TU_TOKEN
+Content-Type: application/json
+
+{
+  "full_name": "Martin Scorsese"
+}

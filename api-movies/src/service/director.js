@@ -37,5 +37,26 @@ export default class Director {
     return rows[0]
   }
     
+  static update = async ({ id, input }) => {
+      await pool.query(
+        `
+        UPDATE directors
+        SET full_name = :full_name
+        WHERE id = :id
+        `,
+        {
+        id,
+        full_name: input.full_name
+        }
+    )
+
+    const [rows] = await pool.query(
+        `SELECT id, full_name FROM directors WHERE id = :id`,
+        { id }
+    )
+
+    return rows[0]
+  }
+  
   
 }
